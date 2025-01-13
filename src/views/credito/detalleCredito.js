@@ -84,7 +84,7 @@ const DetalleCredito = () => {
                               <td>{cuota.valor_cancelado || "N/A"}</td>
                               <td>{cuota.fecha_pagada || "No pagada"}</td>
                               <td>
-  {credito.cuota.estado !== "cancelado" && (
+  {credito?.cuota?.estado !== "cancelado" && (
     <button
       className="btn btn-success btn-sm"
       onClick={() => handlePagar(credito.id, cuota.fecha_pago)}
