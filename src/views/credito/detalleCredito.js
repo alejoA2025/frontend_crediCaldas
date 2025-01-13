@@ -17,8 +17,8 @@ const DetalleCredito = () => {
   const navigate = useNavigate();
   const { id } = useParams(); // Obtener el ID de la ruta
   const [credito, setCredito] = useState(null); // Estado para almacenar los datos del crédito
-  const handlePagar = (creditoId) => {
-    navigate(`/admin/abonar-cuota/${creditoId}`);
+  const handlePagar = (creditoId, fecha) => {
+    navigate(`/admin/abonar-cuota/${creditoId}/${fecha}`);
   };
 
   // Función para obtener los datos del crédito al cargar el componente
@@ -83,13 +83,18 @@ const DetalleCredito = () => {
                               <td>{cuota.valor || "N/A"}</td>
                               <td>{cuota.valor_cancelado || "N/A"}</td>
                               <td>{cuota.fecha_pagada || "No pagada"}</td>
-                              <td><button
-                            className="btn btn-success btn-sm"
-                            onClick={() => handlePagar(credito.id)}
-                            style={{ marginRight: "5px" }}
-                          >
-                            <i className="ni ni-fat-add" /> Pagar
-                          </button></td>
+                              <td>
+  {credito.cuota.estado !== "cancelado" && (
+    <button
+      className="btn btn-success btn-sm"
+      onClick={() => handlePagar(credito.id, cuota.fecha_pago)}
+      style={{ marginRight: "5px" }}
+    >
+      <i className="ni ni-fat-add" /> Pagar
+    </button>
+  )}
+</td>
+
                             </tr>
                           ))
                         ) : (

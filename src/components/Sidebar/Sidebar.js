@@ -17,7 +17,7 @@
 */
 /*eslint-disable*/
 import { useState } from "react";
-import { NavLink as NavLinkRRD, Link } from "react-router-dom";
+import { NavLink as NavLinkRRD, Link , useNavigate} from "react-router-dom";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
 
@@ -55,6 +55,7 @@ import {
 var ps;
 
 const Sidebar = (props) => {
+  const navigate = useNavigate();
   const [collapseOpen, setCollapseOpen] = useState();
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
@@ -103,6 +104,10 @@ const Sidebar = (props) => {
     };
   }
 
+    const closeSession = () => {
+      navigate("/auth/login");
+      localStorage.clear();
+    };
   return (
     <Navbar
       className="navbar-vertical fixed-left navbar-light bg-white"
@@ -119,7 +124,7 @@ const Sidebar = (props) => {
           <span className="navbar-toggler-icon" />
         </button>
         {/* Brand */}
-        {logo ? (
+        {/* {logo ? (
           <NavbarBrand className="pt-0" {...navbarBrandProps}>
             <img
               alt={logo.imgAlt}
@@ -127,7 +132,7 @@ const Sidebar = (props) => {
               src={logo.imgSrc}
             />
           </NavbarBrand>
-        ) : null}
+        ) : null} */}
         {/* User */}
         <Nav className="align-items-center d-md-none">
           <UncontrolledDropdown nav>
@@ -151,7 +156,7 @@ const Sidebar = (props) => {
                 <span className="avatar avatar-sm rounded-circle">
                   <img
                     alt="..."
-                    src={require("../../assets/img/theme/team-1-800x800.jpg")}
+                    src={require("../../assets/img/logo/crediCaldas.png")}
                   />
                 </span>
               </Media>
@@ -160,26 +165,10 @@ const Sidebar = (props) => {
               <DropdownItem className="noti-title" header tag="div">
                 <h6 className="text-overflow m-0">CrediCaldas</h6>
               </DropdownItem>
-              <DropdownItem to="/admin/user-profile" tag={Link}>
-                <i className="ni ni-single-02" />
-                <span>My profile</span>
-              </DropdownItem>
-              <DropdownItem to="/admin/user-profile" tag={Link}>
-                <i className="ni ni-settings-gear-65" />
-                <span>Settings</span>
-              </DropdownItem>
-              <DropdownItem to="/admin/user-profile" tag={Link}>
-                <i className="ni ni-calendar-grid-58" />
-                <span>Activity</span>
-              </DropdownItem>
-              <DropdownItem to="/admin/user-profile" tag={Link}>
-                <i className="ni ni-support-16" />
-                <span>Support</span>
-              </DropdownItem>
-              <DropdownItem divider />
-              <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
-                <i className="ni ni-user-run" />
-                <span>Logout</span>
+              
+              <DropdownItem href="#pablo" onClick={closeSession}>
+                <i className="ni ni-user-run text-primary" />
+                <span>Cerrar sesión</span>
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>

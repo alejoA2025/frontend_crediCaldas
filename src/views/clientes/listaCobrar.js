@@ -56,13 +56,21 @@ const ListaCobrar = () => {
     getCreditos();
   }, [fecha]);
 
-  // Filtrar los creditos según el término de búsqueda
-  const filteredcreditos = creditos.filter((credito) =>
+  const filteredcreditos = creditos
+  .filter((credito) =>
     Object.values(credito)
       .map((value) => (value ? value.toString().toLowerCase() : "")) // Asegura que no haya valores undefined
       .join(" ")
       .includes(searchTerm.toLowerCase())
-  );
+  )
+  .sort((a, b) => {
+    // Coloca los `null` al principio y luego ordena por `num_ruta` de menor a mayor
+    if (a.cliente.num_ruta === null) return -1; // `a` con `null` va al principio
+    if (b.cliente.num_ruta === null) return 1;  // `b` con `null` va al principio
+    return a.cliente.num_ruta - b.cliente.num_ruta;     // Orden ascendente para los demás
+  });
+
+
 
   // Guardar la fecha en localStorage
   const handleFechaChange = (e) => {
@@ -158,7 +166,9 @@ const ListaCobrar = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredcreditos.slice(firstIndex, lastIndex).map((credito) => (
+                  {filteredcreditos
+                  .slice(firstIndex, lastIndex)
+                  .map((credito) => (
                     <tr key={credito.cliente.id}>
                       <td>{credito.cliente.nombre_completo}</td>
                       <td>{credito.cliente.telefono}</td>

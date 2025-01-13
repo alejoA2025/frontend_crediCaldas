@@ -12,7 +12,7 @@
 
 =========================================================
 
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+* The above copyright notice and this permission notice shall be included in all copies or bstantial portions of the Software.
 
 */
 import React from "react";
@@ -26,8 +26,8 @@ import axios from "axios";
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 import { UserProvider } from "context/userContext";
-//axios.defaults.baseURL = "http://127.0.0.1:8000/"
-axios.defaults.baseURL = "https://alejandro2810.pythonanywhere.com/"
+axios.defaults.baseURL = "http://127.0.0.1:8000/"
+//axios.defaults.baseURL = "https://alejandro2810.pythonanywhere.com/"
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
@@ -40,7 +40,7 @@ root.render(
           </ProtectedRoute>
         } />
         <Route path="/auth/*" element={<AuthLayout />} />
-        <Route path="*" element={<Navigate to="/admin/lista-cobrar" />} />
+        {/* <Route path="*" element={<Navigate to="/admin/lista-cobrar" />} /> */}
       
       </Routes>
     </UserProvider>

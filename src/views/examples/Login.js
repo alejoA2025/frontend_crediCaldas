@@ -38,7 +38,7 @@ const Login = () => {
 
       axios.defaults.headers.common['Authorization'] = `Bearer ${access}`;
       
-      navigate("/admin/index"); // Redirigir al dashboard
+      navigate("/admin/lista-cobrar"); // Redirigir al dashboard
     } catch (error) {
       setShowAlert(true);
       setAlertType(error.response.data.status);

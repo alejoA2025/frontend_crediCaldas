@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom"; // Importa el hook useNavigate
 import {
   Button,
@@ -15,18 +14,36 @@ import {
 import Header from "components/Headers/Header.js";
 import axios from "axios";
 import { useState, useEffect } from "react";
-const CrearCapital= () => {
+
+const CrearCapital = () => {
   const navigate = useNavigate(); // Inicializa el hook useNavigate
-  const [user, setUser] = useState(""); 
+  const [user, setUser] = useState("");
   const [formData, setFormData] = useState({
-
     capital: "",
-
   });
 
+  // Función para formatear números con puntos como separador de miles
+  const formatNumber = (num) => {
+    if (!num) return "";
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
+  // Función para convertir valores formateados a números sin formato
+  const parseNumber = (str) => {
+    return parseInt(str.replace(/\./g, ""), 10) || 0;
+  };
+
+  // Manejar cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    if (name === "capital") {
+      const numericValue = parseNumber(value); // Convertir a número sin formato
+      setFormData({ ...formData, [name]: numericValue }); // Actualizar estado interno
+      e.target.value = formatNumber(numericValue); // Formatear visualmente el valor
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -34,49 +51,45 @@ const CrearCapital= () => {
 
     // Obtener el token desde localStorage
     const token = localStorage.getItem("token");
-    console.log(token)
+    console.log(token);
     // Si el token no está disponible, redirigir al usuario al inicio de sesión
-   
 
     try {
       const dataToSend = {
         usuario: user.url,
-        capital_inicial: formData.capital|| null,
+        capital_inicial: formData.capital || null,
         capital_prestado: 0,
         capital_cancelado: 0,
         capital_disponible: formData.capital || null,
-     
       };
       console.log("Datos enviados:", dataToSend); // Para depuración
 
       // Realizar la solicitud POST con el token en las cabeceras
       const response = await axios.post("api/cobro/", dataToSend, {
         headers: {
-          'Authorization': `Bearer ${token}`, // Agregar token a las cabeceras
-        }
+          Authorization: `Bearer ${token}`, // Agregar token a las cabeceras
+        },
       });
       navigate(`/admin/lista-clientes`);
-    
 
       // Reinicia el formulario
       setFormData({
-        usuario: "",
-        capital_inicial: "",
+        capital: "",
       });
     } catch (error) {
       console.error("Error al crear el cliente:", error.response?.data || error);
       alert("Error al crear el cliente. Por favor, inténtelo de nuevo.");
     }
- 
   };
+
   useEffect(() => {
-    let item = localStorage.getItem('User');
-    let objeto = JSON.parse(item); 
-    console.log(objeto)
-    setUser(objeto)
-    console.log(user.url)
-    
+    let item = localStorage.getItem("User");
+    let objeto = JSON.parse(item);
+    console.log(objeto);
+    setUser(objeto);
+    console.log(user?.url);
   }, []);
+
   return (
     <>
       <Header />
@@ -97,8 +110,8 @@ const CrearCapital= () => {
                       id="capital"
                       name="capital"
                       placeholder="Capital"
-                      type="text"
-                      value={formData.capital}
+                      type="text" // Cambiar a texto para formatear
+                      value={formatNumber(formData.capital)} // Mostrar valor formateado
                       onChange={handleChange}
                     />
                   </FormGroup>

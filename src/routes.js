@@ -16,15 +16,11 @@ import CrearCapital from "views/capital/capital.js";
 import CrearGastos from "views/gastos/crearGastos.js";
 import ListaGastos from "views/gastos/listaGastos.js";
 import EditarCliente from "views/clientes/editarCliente.js";
+import CuotaCliente from "views/cuota/cuotaCliente.js";
+import ListaCapital from "views/capital/listaCapital.js";
 var routes = [
-  {
-    path: "/index",
-    name: "Dashboard",
-    icon: "ni ni-tv-2 text-primary",
-    component: <Index />,
-    layout: "/admin",
-  },
-,
+  
+
 
   // {
   //   path: "/user-profile",
@@ -62,6 +58,7 @@ var routes = [
     sidebar: false,
     layout: "/admin",
   },
+
   {
     path: "/detalle-credito/:id",
     name: "Detalle Credito",
@@ -73,15 +70,23 @@ var routes = [
   {
     path: "/crear-clientes",
     name: "Crear Clientes",
-    icon: "ni ni-bullet-list-67 text-red",
+    icon: "ni ni-fat-add text-red",
     component: <CrearClientes />,
     layout: "/admin",
   },
   {
     path: "/editar-cliente/:id",
     name: "Editar Cliente",
-    icon: "ni ni-bullet-list-67 text-red",
+    icon: "ni ni ni-fat-add text-red",
     component: <EditarCliente />,
+    layout: "/admin",
+    sidebar: false,
+  },
+  {
+    path: "/abonar-cliente/:id/fecha",
+    name: " Cliente",
+    icon: "ni ni ni-fat-add text-red",
+    component: <CuotaCliente />,
     layout: "/admin",
     sidebar: false,
   },
@@ -115,11 +120,27 @@ var routes = [
     layout: "/auth",
   },
   {
+    path: "/lista-capital",
+    name: "Lista capital",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: <ListaCapital />,
+    layout: "/admin",
+  },
+  {
     path: "/register",
     name: "Register",
     icon: "ni ni-circle-08 text-pink",
     component: <Register />,
     layout: "/auth",
+    sidebar: false,
+  },
+  {
+    path: "/index",
+    name: "Dashboard",
+    icon: "ni ni-tv-2 text-primary",
+    component: <Index />,
+    layout: "/admin",
+    sidebar: false,
   },
 ];
 export default routes;

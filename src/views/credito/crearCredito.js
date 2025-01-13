@@ -32,7 +32,7 @@ const CrearCredito = () => {
     { value: "quincenal", label: "Quincenal" },
     { value: "mensual", label: "Mensual" },
   ];
-
+  
   // Obtener los datos del cliente al cargar el componente
   useEffect(() => {
     const fetchCliente = async () => {
@@ -50,10 +50,29 @@ const CrearCredito = () => {
     }
   }, [id]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    // Función para formatear números con puntos como separador de miles
+    const formatNumber = (num) => {
+      if (!num) return "";
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+  
+    // Función para convertir valores formateados a números sin formato
+    const parseNumber = (str) => {
+      return parseInt(str.replace(/\./g, ""), 10) || 0;
+    };
+  
+    // Manejar cambios en los campos del formulario
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+  
+      if (name === "saldo") {
+        const numericValue = parseNumber(value); // Convertir a número sin formato
+        setFormData({ ...formData, [name]: numericValue }); // Actualizar estado interno
+        e.target.value = formatNumber(numericValue); // Formatear visualmente el valor
+      } else {
+        setFormData({ ...formData, [name]: value });
+      }
+    };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,16 +120,16 @@ const CrearCredito = () => {
               </CardHeader>
               <CardBody className="px-lg-5 py-lg-5">
                 <Form role="form" onSubmit={handleSubmit}>
-                  <FormGroup className="mb-3">
+                <FormGroup className="mb-3">
                     <label className="form-control-label" htmlFor="saldo">
-                      Prestamo
+                      Préstamo
                     </label>
                     <Input
                       id="prestamo"
                       name="saldo"
                       placeholder="Saldo"
-                      type="number"
-                      value={formData.saldo}
+                      type="text" // Cambiar a texto para permitir formato con puntos
+                      value={formatNumber(formData.saldo)} // Formatear visualmente
                       onChange={handleChange}
                     />
                   </FormGroup>
