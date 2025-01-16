@@ -30,20 +30,24 @@ import { UserProvider } from "context/userContext";
 axios.defaults.baseURL = "https://alejandro2810.pythonanywhere.com/"
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
+
 root.render(
   <BrowserRouter>
     <UserProvider>
       <Routes>
+        {/* Ruta protegida para Admin */}
         <Route path="/admin/*" element={
           <ProtectedRoute>
             <AdminLayout />
           </ProtectedRoute>
         } />
+        
+        {/* Ruta para autenticación */}
         <Route path="/auth/*" element={<AuthLayout />} />
-        {/* <Route path="*" element={<Navigate to="/admin/lista-cobrar" />} /> */}
-      
+        
+        {/* Ruta por defecto para redirigir a /auth/login */}
+        <Route path="*" element={<Navigate to="/auth/login" replace />} />
       </Routes>
     </UserProvider>
-
   </BrowserRouter>
 );

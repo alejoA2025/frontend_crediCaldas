@@ -202,35 +202,6 @@ const ListaCobrar = () => {
                 </tbody>
               </Table>
               <CardFooter className="py-4">
-                <nav aria-label="...">
-                  <Pagination
-                    className="pagination justify-content-end mb-0"
-                    listClassName="justify-content-end mb-0"
-                  >
-                    <PaginationItem disabled={currentPage === 1}>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setCurrentPage(currentPage - 1);
-                        }}
-                      >
-                        <i className="fas fa-angle-left" />
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setCurrentPage(currentPage + 1);
-                        }}
-                      >
-                        <i className="fas fa-angle-right" />
-                      </PaginationLink>
-                    </PaginationItem>
-                  </Pagination>
-                </nav>
               </CardFooter>
             </Card>
           </div>

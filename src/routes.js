@@ -18,6 +18,7 @@ import ListaGastos from "views/gastos/listaGastos.js";
 import EditarCliente from "views/clientes/editarCliente.js";
 import CuotaCliente from "views/cuota/cuotaCliente.js";
 import ListaCapital from "views/capital/listaCapital.js";
+import SaldoDiario from "views/cuota/saldoDiario.js";
 var routes = [
   
 
@@ -58,6 +59,13 @@ var routes = [
     sidebar: false,
     layout: "/admin",
   },
+  {
+    path: "/saldo-dia",
+    name: "Saldo diario ",
+    icon: "ni ni-bullet-list-67 text-red",
+    component: <SaldoDiario />,
+    layout: "/admin",
+  },
 
   {
     path: "/detalle-credito/:id",
@@ -83,7 +91,7 @@ var routes = [
     sidebar: false,
   },
   {
-    path: "/abonar-cliente/:id/fecha",
+    path: "/abonar-cliente/:id/:fecha",
     name: " Cliente",
     icon: "ni ni ni-fat-add text-red",
     component: <CuotaCliente />,

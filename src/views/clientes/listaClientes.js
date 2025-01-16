@@ -21,11 +21,8 @@ const ListaClientes = () => {
   const [clientes, setClientes] = useState([]); // Lista de clientes
   const [searchTerm, setSearchTerm] = useState(""); // Término de búsqueda
   const [currentPage, setCurrentPage] = useState(1); // Página actual
-  const itemsPerPage = 10; // Número de clientes por página
 
-  // Cálculo de los índices para la paginación
-  const firstIndex = (currentPage - 1) * itemsPerPage;
-  const lastIndex = firstIndex + itemsPerPage;
+
 
   // Obtener la lista de clientes
   const getClientes = async () => {
@@ -108,7 +105,7 @@ const ListaClientes = () => {
                 <tbody>
                   {filteredClientes
                     .sort((a, b) => (a.num_ruta || 0) - (b.num_ruta || 0)) // Ordenar por num_ruta
-                    .slice(firstIndex, lastIndex) // Paginación
+                    .slice() // Paginación
                     .map((cliente) => (
                       <tr key={cliente.id}>
                         <td>{cliente.num_ruta || "N/A"}</td>
@@ -149,35 +146,6 @@ const ListaClientes = () => {
                 </tbody>
               </Table>
               <CardFooter className="py-4">
-                <nav aria-label="...">
-                  <Pagination
-                    className="pagination justify-content-end mb-0"
-                    listClassName="justify-content-end mb-0"
-                  >
-                    <PaginationItem disabled={currentPage === 1}>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setCurrentPage(currentPage - 1);
-                        }}
-                      >
-                        <i className="fas fa-angle-left" />
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setCurrentPage(currentPage + 1);
-                        }}
-                      >
-                        <i className="fas fa-angle-right" />
-                      </PaginationLink>
-                    </PaginationItem>
-                  </Pagination>
-                </nav>
               </CardFooter>
             </Card>
           </div>
