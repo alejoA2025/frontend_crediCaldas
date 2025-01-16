@@ -167,7 +167,7 @@ const ListaCobrar = () => {
                 </thead>
                 <tbody>
                   {filteredcreditos
-                  .slice(firstIndex, lastIndex)
+                  .slice()
                   .map((credito) => (
                     <tr key={credito.cliente.id}>
                       <td>{credito.cliente.nombre_completo}</td>
