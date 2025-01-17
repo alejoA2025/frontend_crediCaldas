@@ -25,7 +25,6 @@ const DetalleCredito = () => {
   const fetchCredito = async () => {
     try {
       const response = await axios.get(`/api/creditos/${id}/`); // Llamar a la API
-      console.log("Datos del crédito:", response.data); // Mostrar datos en la consola
       setCredito(response.data); // Guardar los datos en el estado
     } catch (error) {
       console.error("Error al obtener los datos del crédito:", error);
@@ -75,28 +74,29 @@ const DetalleCredito = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {credito.cuotas && Array.isArray(credito.cuotas) && credito.cuotas.length > 0 ? (
-                          credito.cuotas.map((cuota, index) => (
-                            <tr key={index}>
-                              <td>{index + 1}</td> {/* Número de la cuota */}
-                              <td>{cuota.fecha_pago || "N/A"}</td>
-                              <td>{cuota.valor || "N/A"}</td>
-                              <td>{cuota.valor_cancelado || "N/A"}</td>
-                              <td>{cuota.fecha_pagada || "No pagada"}</td>
-                              <td>
-  {cuota?.estado !== "cancelado" && (
-    <button
-      className="btn btn-success btn-sm"
-      onClick={() => handlePagar(credito.id, cuota.fecha_pago)}
-      style={{ marginRight: "5px" }}
-    >
-      <i className="ni ni-fat-add" /> Pagar
-    </button>
-  )}
-</td>
-
-                            </tr>
-                          ))
+                      {credito.cuotas && Array.isArray(credito.cuotas) && credito.cuotas.length > 0 ? (
+                          credito.cuotas
+                            .sort((a, b) => a.num_cuotas - b.num_cuotas) // Ordenar de menor a mayor por num_cuotas
+                            .map((cuota, index) => (
+                              <tr key={index}>
+                                <td>{cuota.num_cuotas}</td> {/* Número de la cuota */}
+                                <td>{cuota.fecha_pago || "N/A"}</td>
+                                <td>{cuota.valor || "N/A"}</td>
+                                <td>{cuota.valor_cancelado || "N/A"}</td>
+                                <td>{cuota.fecha_pagada || "No pagada"}</td>
+                                <td>
+                                  {cuota?.estado !== "cancelado" && (
+                                    <button
+                                      className="btn btn-success btn-sm"
+                                      onClick={() => handlePagar(credito.id, cuota.fecha_pago)}
+                                      style={{ marginRight: "5px" }}
+                                    >
+                                      <i className="ni ni-fat-add" /> Pagar
+                                    </button>
+                                  )}
+                                </td>
+                              </tr>
+                            ))
                         ) : (
                           <tr>
                             <td colSpan="5">No hay cuotas disponibles.</td>

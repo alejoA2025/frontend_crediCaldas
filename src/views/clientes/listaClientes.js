@@ -58,7 +58,7 @@ const ListaClientes = () => {
   };
 
   const handleVer = async (id) => {
-    console.log(`Detalles del cliente con ID ${id}`);
+    
     try {
 
       const { data } = await axios.get(`api/creditos/creditoPorCliente/?cliente_id=${id}`);

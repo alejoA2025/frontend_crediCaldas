@@ -34,24 +34,13 @@ const ListaCobrar = () => {
   // Obtener la lista de clientes por fecha
   const getCreditos = async () => {
     try {
-
       const { data } = await axios.get(`/api/creditos/buscar_por_fecha/?fecha=${fecha}`);
-      console.log("get vreditos",data);
       setCreditos(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-  const getCuota = async (id) => {
-    try {
 
-      const { data } = await axios.get(`/api/cuotas/${id}/`);
-      console.log("get vreditos",data);
-      setCuota(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
   useEffect(() => {
     getCreditos();
   }, [fecha]);
@@ -83,41 +72,17 @@ const ListaCobrar = () => {
   const handlePagar = (creditoId) => {
     navigate(`/admin/abonar-cuota/${creditoId}`);
   };
-  const handlePendiente = async (cuotas) => {
-   
-    try {
-      const storedDate = localStorage.getItem("fecha");
-      if (!storedDate) {
-        console.error("No hay fecha almacenada en el localStorage.");
-        return;
-      }
-  
-      // Buscar la cuota con fecha_pago igual a la fecha en localStorage
-      const cuotaPendiente = cuotas.find((cuota) => cuota.fecha_pago === storedDate);
-      
-      if (!cuotaPendiente) {
-        console.error("No se encontró una cuota con la fecha especificada.");
-        return;
-      }
 
-        const url = cuotaPendiente.url;
-        const idString = url.split('/').filter(Boolean).pop(); // Extrae el ID como cadena
-        const idNumber = parseInt(idString, 10);
-        await getCuota(idNumber)
-        setCuota((prevState) => ({
-          ...prevState,
-          estado: 'pendiente',
-        }));
-        console.log('set vuota', cuota)
-        
-      // Crear el objeto de actualización
-     
-      // Hacer la solicitud PUT
-      const response = await axios.put(`/api/cuotas/${idNumber}/editar-pendiente/`, cuota);
-      console.log("Cuota actualizada:", response.data);
-      
-      // Mensaje de éxito
+  const handlePendiente = async (cuota) => {
+    try {
+      // Crear una copia del objeto cuota y actualizar el estado a "pendiente"
+      const updatedCuota = { ...cuota, estado: "pendiente" };
+      // Hacer la solicitud PUT para actualizar la cuota
+      const response = await axios.put(`/api/cuotas/${cuota.id}/editar-pendiente/`, updatedCuota);
       alert("La cuota ha sido marcada como pendiente.");
+  
+      // Volver a traer los datos actualizados
+      await getCreditos();
     } catch (error) {
       console.error("Error al actualizar la cuota:", error);
       alert("Hubo un error al intentar actualizar la cuota.");
@@ -158,6 +123,7 @@ const ListaCobrar = () => {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
+                    <th scope="col"># Ruta</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Celular</th>
                     <th scope="col">Barrio</th>
@@ -170,6 +136,7 @@ const ListaCobrar = () => {
                   .slice()
                   .map((credito) => (
                     <tr key={credito.cliente.id}>
+                      <td>{credito.cliente.num_ruta}</td>
                       <td>{credito.cliente.nombre_completo}</td>
                       <td>{credito.cliente.telefono}</td>
                       <td>{credito.cliente.barrio}</td>
@@ -189,13 +156,15 @@ const ListaCobrar = () => {
                         >
                           Crédito
                         </button>
-                        <button
-                        className="btn btn-danger btn-sm"
-                        style={{ marginRight: "5px" }}
-                          onClick={() => handlePendiente(credito.cuotas)} // Navega al detalle de crédito
-                        >
-                          Pendiente
-                        </button>
+                        {credito?.cuotas !== null && (
+            <button
+              className="btn btn-danger btn-sm"
+              style={{ marginRight: "5px" }}
+              onClick={() => handlePendiente(credito.cuotas[0])} // Marca la cuota como pendiente
+            >
+              Pendiente
+            </button>
+          )}
                       </td>
                     </tr>
                   ))}
