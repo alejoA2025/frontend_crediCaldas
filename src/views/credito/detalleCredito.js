@@ -62,7 +62,7 @@ const DetalleCredito = () => {
                 {credito ? (
                   <div>
                     <p><strong>Cliente:</strong> {credito.cliente.nombre_completo}</p>
-                    <p><strong>Dirección:</strong> {credito.cliente.direccion}</p>
+                    <p><strong>Dirección:</strong> {credito.cliente.barrio}  {credito.cliente.direccion}</p>
                     <p><strong>Teléfono:</strong> {credito.cliente.telefono}</p>
                     <p><strong>Prestamo:</strong> {credito.prestamo}</p>
                     <p><strong>Saldo:</strong> {credito.saldo}</p>
