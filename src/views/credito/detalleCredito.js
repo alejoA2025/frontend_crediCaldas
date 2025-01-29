@@ -20,6 +20,10 @@ const DetalleCredito = () => {
   const handlePagar = (creditoId, fecha) => {
     navigate(`/admin/abonar-cliente/${creditoId}/${fecha}`);
   };
+  const handleEditar = (creditoId) => {
+    navigate(`/admin/editar-credito/${creditoId}`);
+  };
+
 
   // Función para obtener los datos del crédito al cargar el componente
   const fetchCredito = async () => {
@@ -47,6 +51,12 @@ const DetalleCredito = () => {
             <Card className="shadow">
               <CardHeader>
                 <h3 className="mb-0">Detalle del Crédito</h3>
+                <button
+                  className="btn btn-info btn-sm"
+                  onClick={() => handleEditar(credito.id)}
+                >
+                   <i className="ni ni-ruler-pencil" /> Editar
+                </button>
               </CardHeader>
               <CardBody className="px-lg-5 py-lg-5">
                 {credito ? (
@@ -96,7 +106,10 @@ const DetalleCredito = () => {
                                   )}
                                 </td>
                               </tr>
+                              
                             ))
+                              
+                            
                         ) : (
                           <tr>
                             <td colSpan="5">No hay cuotas disponibles.</td>

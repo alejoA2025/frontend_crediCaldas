@@ -19,6 +19,7 @@ import EditarCliente from "views/clientes/editarCliente.js";
 import CuotaCliente from "views/cuota/cuotaCliente.js";
 import ListaCapital from "views/capital/listaCapital.js";
 import SaldoDiario from "views/cuota/saldoDiario.js";
+import EditarCredito from "views/credito/editarCredito";
 var routes = [
   
 
@@ -87,6 +88,14 @@ var routes = [
     name: "Editar Cliente",
     icon: "ni ni ni-fat-add text-red",
     component: <EditarCliente />,
+    layout: "/admin",
+    sidebar: false,
+  },
+  {
+    path: "/editar-credito/:id",
+    name: "Editar Credito",
+    icon: "ni ni ni-fat-add text-red",
+    component: <EditarCredito />,
     layout: "/admin",
     sidebar: false,
   },
