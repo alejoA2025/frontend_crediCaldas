@@ -43,7 +43,7 @@ const ListaCobrar = () => {
 
   useEffect(() => {
     getCreditos();
-  }, [fecha]);
+  }, [fecha, creditos]);
 
   const filteredcreditos = creditos
   .filter((credito) =>
