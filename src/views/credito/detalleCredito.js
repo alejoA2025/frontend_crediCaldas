@@ -63,13 +63,14 @@ const DetalleCredito = () => {
                   <div>
                     <p><strong>Cliente:</strong> {credito.cliente.nombre_completo}</p>
                     <p><strong>Dirección:</strong> {credito.cliente.barrio}  {credito.cliente.direccion}</p>
+                    <p><strong>Otra Dirección:</strong> {credito.cliente?.direccion_otra}  {credito.cliente?.direccion_otra}</p>
                     <p><strong>Teléfono:</strong> {credito.cliente.telefono}</p>
                     <p><strong>Prestamo:</strong> {credito.prestamo}</p>
                     <p><strong>Saldo:</strong> {credito.saldo}</p>
                     <p><strong>Forma de Pago:</strong> {credito.forma_pago}</p>
                     <p><strong>Total Cuotas:</strong> {credito.num_cuotas_pagadas} / {credito.numero_cuotas}</p>
-                    <p><strong>Estado:</strong> {credito.estado}</p>
                     <p><strong>Fecha del Préstamo:</strong> {credito.fecha_prestamo}</p>
+                    <p><strong>Referencia:</strong> {credito.cliente?.referencia}  {credito.cliente?.referencia}</p>
 
                     <h4>Cuotas</h4>
                     <Table className="align-items-center table-flush" responsive>
