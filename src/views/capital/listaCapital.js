@@ -32,11 +32,26 @@ const ListaCapital = () => {
     try {
       const { data } = await axios.get("api/cobro/");
       setCapital(data);
+      console.log(capital)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
+  const handleActualizar = async (item) => {
+    console.log("actualizar", item)
+    try {
+      const updatedItem = {
+        ...item,
+        capital_cancelado: 0, // Se establece en 0
+      };
+  
+      await axios.put(`api/cobro/${item.id}/`, updatedItem); // Enviar datos actualizados
+      getCapital(); // Recargar la lista después de la actualización
+    } catch (error) {
+      console.error("Error actualizando datos:", error);
+    }
+  };
+  
   useEffect(() => {
     getCapital();
   }, []);
@@ -74,6 +89,7 @@ const ListaCapital = () => {
                     <th scope="col">Capital Disponible</th>
                     <th scope="col">Capital Prestado</th>
                     <th scope="col">Capital Cancelado</th>
+                    <th scope="col">Accion </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -86,6 +102,15 @@ const ListaCapital = () => {
                         <td>{item.capital_disponible.toLocaleString("es-CO")}</td>
                         <td>{item.capital_prestado.toLocaleString("es-CO")}</td>
                         <td>{item.capital_cancelado.toLocaleString("es-CO")}</td>
+                        <td>
+                        <button
+                            className="btn btn-success btn-sm"
+                            onClick={() => handleActualizar(item)}
+                            style={{ marginRight: "5px" }}
+                          >
+                            <i  /> Actualizar
+                          </button>
+                        </td>
                       </tr>
                     ))}
                 </tbody>
