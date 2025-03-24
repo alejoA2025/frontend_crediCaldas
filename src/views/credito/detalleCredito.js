@@ -9,27 +9,28 @@ import {
   Row,
   Table,
 } from "reactstrap";
-import { useParams } from "react-router-dom"; // Importar useParams
+import { useParams } from "react-router-dom";
 import Header from "components/Headers/Header.js";
 import axios from "axios";
 
 const DetalleCredito = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); // Obtener el ID de la ruta
-  const [credito, setCredito] = useState(null); // Estado para almacenar los datos del crédito
+  const { id } = useParams();
+  const [credito, setCredito] = useState(null);
+  const fechaActual = localStorage.getItem("fecha") || "Fecha no disponible";
+
   const handlePagar = (creditoId, fecha) => {
     navigate(`/admin/abonar-cliente/${creditoId}/${fecha}`);
   };
+  
   const handleEditar = (creditoId) => {
     navigate(`/admin/editar-credito/${creditoId}`);
   };
 
-
-  // Función para obtener los datos del crédito al cargar el componente
   const fetchCredito = async () => {
     try {
-      const response = await axios.get(`/api/creditos/${id}/`); // Llamar a la API
-      setCredito(response.data); // Guardar los datos en el estado
+      const response = await axios.get(`/api/creditos/${id}/`);
+      setCredito(response.data);
     } catch (error) {
       console.error("Error al obtener los datos del crédito:", error);
       alert("Error al cargar los datos del crédito.");
@@ -62,16 +63,24 @@ const DetalleCredito = () => {
                 {credito ? (
                   <div>
                     <p><strong>Cliente:</strong> {credito.cliente.nombre_completo}</p>
-                    <p><strong>Dirección:</strong> {credito.cliente.barrio}  {credito.cliente.direccion}</p>
-                    <p><strong>Otra Dirección:</strong> {credito.cliente?.direccion_otra}  {credito.cliente?.direccion_otra}</p>
+                    <ul>
+                      {credito.cuotas &&
+                        credito.cuotas
+                          .filter((cuota) => cuota.valor_cancelado > 0)
+                          .map((cuota, index) => (
+                            <li key={index}>
+                              Cuota {cuota.num_cuotas}: {cuota.valor_cancelado}
+                            </li>
+                          ))}
+                    </ul>
+                    <p><strong>Dirección:</strong> {credito.cliente.barrio} {credito.cliente.direccion}</p>
                     <p><strong>Teléfono:</strong> {credito.cliente.telefono}</p>
-                    <p><strong>Prestamo:</strong> {credito.prestamo}</p>
-                    <p><strong>Saldo:</strong> {credito.saldo}</p>
+                    <p><strong>Préstamo:</strong> {credito.prestamo}</p>
+                    <p><strong>Saldo:</strong> <span style={{ color: "red" }}>{credito.saldo}</span></p>
                     <p><strong>Forma de Pago:</strong> {credito.forma_pago}</p>
                     <p><strong>Total Cuotas:</strong> {credito.num_cuotas_pagadas} / {credito.numero_cuotas}</p>
                     <p><strong>Fecha del Préstamo:</strong> {credito.fecha_prestamo}</p>
-                    <p><strong>Referencia:</strong> {credito.cliente?.referencia}  {credito.cliente?.referencia}</p>
-
+                    <p><strong>Fecha:</strong> {fechaActual}</p>
                     <h4>Cuotas</h4>
                     <Table className="align-items-center table-flush" responsive>
                       <thead className="thead-light">
@@ -81,16 +90,16 @@ const DetalleCredito = () => {
                           <th scope="col">Valor</th>
                           <th scope="col">Valor Cancelado</th>
                           <th scope="col">Fecha Cancelada</th>
-                          <th scope="col">Accion</th>
+                          <th scope="col">Acción</th>
                         </tr>
                       </thead>
                       <tbody>
-                      {credito.cuotas && Array.isArray(credito.cuotas) && credito.cuotas.length > 0 ? (
+                        {credito.cuotas && Array.isArray(credito.cuotas) && credito.cuotas.length > 0 ? (
                           credito.cuotas
-                            .sort((a, b) => a.num_cuotas - b.num_cuotas) // Ordenar de menor a mayor por num_cuotas
+                            .sort((a, b) => a.num_cuotas - b.num_cuotas)
                             .map((cuota, index) => (
                               <tr key={index}>
-                                <td>{cuota.num_cuotas}</td> {/* Número de la cuota */}
+                                <td>{cuota.num_cuotas}</td>
                                 <td>{cuota.fecha_pago || "N/A"}</td>
                                 <td>{cuota.valor || "N/A"}</td>
                                 <td>{cuota.valor_cancelado || "N/A"}</td>
@@ -107,10 +116,7 @@ const DetalleCredito = () => {
                                   )}
                                 </td>
                               </tr>
-                              
                             ))
-                              
-                            
                         ) : (
                           <tr>
                             <td colSpan="5">No hay cuotas disponibles.</td>

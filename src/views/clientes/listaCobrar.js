@@ -125,6 +125,7 @@ const ListaCobrar = () => {
                   <tr>
                     <th scope="col"># Ruta</th>
                     <th scope="col">Nombre</th>
+                    <th scope="col">$</th>
                     <th scope="col">Celular</th>
                     <th scope="col">Barrio</th>
                     <th scope="col">Dirección</th>
@@ -137,18 +138,25 @@ const ListaCobrar = () => {
                   .map((credito) => (
                     <tr key={credito.cliente.id}>
                       <td>{credito.cliente.num_ruta}</td>
-                      <td>{credito.cliente.nombre_completo}</td>
-                      <td>{credito.cliente.telefono}</td>
-                      <td>{credito.cliente.barrio}</td>
-                      <td>{credito.cliente.direccion || "N/A"}</td>
                       <td>
-                        <button
+                        {credito.cliente.nombre_completo}
+                        
+                        </td>
+                      
+                      <td>
+                      <button
                           className="btn btn-success btn-sm"
                           style={{ marginRight: "5px" }}
                           onClick={() => handlePagar(credito.id)} // Navega al abonar cuota
                         >
                           Pagar
                         </button>
+                      </td>
+                      <td>{credito.cliente.telefono}</td>
+                      <td>{credito.cliente.barrio}</td>
+                      <td>{credito.cliente.direccion || "N/A"}</td>
+                      <td>
+                       
                         <button
                           className="btn btn-info btn-sm"
                           style={{ marginRight: "5px" }}
