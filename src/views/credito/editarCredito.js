@@ -16,16 +16,16 @@ import axios from "axios";
 
 const EditarCredito = () => {
   const navigate = useNavigate();
-  const { id } = useParams(); // Obtener el ID del crédito desde la URL
+  const { id } = useParams(); 
   const [credito, setCredito] = useState(null);
   const [formData, setFormData] = useState({
     saldo: "",
     numero_cuotas: "",
     fecha_prestamo: "",
     forma_pago: "",
-    cliente:"",
-    prestamo:"",
-    num_cuotas_pagadas:"",
+    cliente: "",
+    prestamo: "",
+    num_cuotas_pagadas: "",
   });
 
   const FORMA_PAGO_CHOICES = [
@@ -35,15 +35,13 @@ const EditarCredito = () => {
     { value: "mensual", label: "Mensual" },
   ];
 
-  // Cargar los datos del crédito al montar el componente
   useEffect(() => {
     const fetchCredito = async () => {
       try {
-        const response = await axios.get(`/api/creditos/${id}/`); // Obtener crédito por ID
+        const response = await axios.get(`/api/creditos/${id}/`);
         setCredito(response.data);
-        console.log(response.data)
         setFormData({
-          cliente: response.data.cliente.url || 0,
+          cliente: response.data.cliente.url || "",
           prestamo: response.data.prestamo || 0,
           saldo: response.data.saldo || 0,
           num_cuotas_pagadas: response.data.num_cuotas_pagadas || 0,
@@ -62,42 +60,32 @@ const EditarCredito = () => {
     }
   }, [id]);
 
-  // Manejar cambios en los campos editables
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Enviar datos actualizados con PUT
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-      const dataToSend = {
-        cliente: formData.cliente,
-        fecha_prestamo:formData.fecha_prestamo,
-        num_cuotas_pagadas: formData.num_cuotas_pagadas,
-        prestamo: formData.prestamo,
-        numero_cuotas: formData.numero_cuotas,
-        forma_pago: formData.forma_pago,
-        saldo: formData.saldo
-      }
-      try {
-        await axios.put(`/api/creditos/${id}/`, dataToSend);
-        alert("Crédito actualizado exitosamente.");
-        navigate(`/admin/detalle-credito/${id}`);
-      } catch (error) {
-        console.error("Error completo:", error);
-        if (error.response) {
-          // Respuesta del servidor con más detalles
-          console.error("Detalles del error:", error.response.data);
-          alert(`Error: ${error.response.data}`);
-        } else {
-          // Error de red o configuración
-          console.error("Error de red o configuración:", error.message);
-          alert(`Error: ${error.message}`);
-        }
-      }
-          
+
+    const dataToSend = {
+      cliente: formData.cliente,
+      fecha_prestamo: formData.fecha_prestamo,
+      num_cuotas_pagadas: formData.num_cuotas_pagadas,
+      prestamo: formData.saldo,
+      numero_cuotas: formData.numero_cuotas,
+      forma_pago: formData.forma_pago,
+      saldo: formData.saldo, 
+    };
+
+    try {
+      await axios.put(`/api/creditos/${id}/`, dataToSend);
+      alert("Crédito actualizado exitosamente.");
+      navigate(`/admin/detalle-credito/${id}`);
+    } catch (error) {
+      console.error("Error al actualizar el crédito:", error);
+      alert("Hubo un problema al actualizar el crédito.");
+    }
   };
 
   return (
@@ -118,17 +106,17 @@ const EditarCredito = () => {
               <CardBody className="px-lg-5 py-lg-5">
                 {credito ? (
                   <Form role="form" onSubmit={handleSubmit}>
-                    {/* Campo solo lectura - Saldo */}
+                    {/* Campo editable - Saldo */}
                     <FormGroup className="mb-3">
                       <label className="form-control-label" htmlFor="saldo">
-                        Préstamo
+                        Saldo
                       </label>
                       <Input
                         id="saldo"
                         name="saldo"
-                        type="text"
-                        value={credito.saldo}
-                        disabled
+                        type="number"
+                        value={formData.saldo}
+                        onChange={handleChange}
                       />
                     </FormGroup>
 
@@ -155,7 +143,7 @@ const EditarCredito = () => {
                         id="fecha_prestamo"
                         name="fecha_prestamo"
                         type="date"
-                        value={credito.fecha_prestamo}
+                        value={formData.fecha_prestamo}
                         disabled
                       />
                     </FormGroup>
