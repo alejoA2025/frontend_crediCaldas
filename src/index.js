@@ -27,7 +27,9 @@ import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 import { UserProvider } from "context/userContext";
 //axios.defaults.baseURL = "http://127.0.0.1:8000/"
-axios.defaults.baseURL = "https://credicaldas.pythonanywhere.com/"
+
+axios.defaults.baseURL = "https://alejandro2810.pythonanywhere.com/"
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 
